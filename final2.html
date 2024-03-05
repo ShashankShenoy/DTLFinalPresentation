@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+    <link rel="icon" type="image/x-icon" href="logo.jpg">
+  <title>ADDITION OF 3 VECTORS</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="vtvt_demo_styles.css">
+  <script type="text/javascript" src="backend.js"></script>
+</head>
+<style>
+
+  .h3{
+      font-size: xx-large;
+      font-family: monospace;
+  }
+  .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: auto;
+      width: 50%;
+  }   
+  label {
+      display: block;
+      margin-bottom: 10px;
+  }
+  input[type="number"] {
+      width: 100px;
+      padding: 5px;
+      margin-bottom: 10px;
+      align-items: center;
+      font-family: monospace;
+  }   
+  
+</style>
+<body style="background-image: url('bgll.jpg'); opacity:1.2;">
+  <h1>ADDITION OF 3 VECTORS</h1>
+  <p>Enter the coordinates for the vector:</p>
+    <div class="container">
+        <label for="x1Coordinate"><h3>X1 Coordinate:</h3></label>
+        <input type="number" id="x1Coordinate" name="x1Coordinate">
+        <label for="y1Coordinate"><h3>Y1 Coordinate:</h3></label>
+        <input type="number" id="y1Coordinate" name="y1Coordinate">
+    
+        <label for="x2Coordinate" style="padding-right: 10px;"><h3>X2 Coordinate:</h3></label>
+        <input type="number" id="x2Coordinate" name="x2Coordinate">
+        <label for="y2Coordinate" style="padding-right: 10px;"><h3>Y2 Coordinate:</h3></label>
+        <input type="number" id="y2Coordinate" name="y2Coordinate">
+
+        <label for="x3Coordinate"><h3>X3 Coordinate:</h3></label>
+        <input type="number" id="x3Coordinate" name="x3Coordinate">
+        <label for="y3Coordinate"><h3>Y3 Coordinate:</h3></label>
+        <input type="number" id="y3Coordinate" name="y3Coordinate">
+        
+    </div>
+    <button id="button" style="margin-top: 15px" onclick="createVectors()">Create Vectors</button>
+    <div class="canvas-wrapper">
+    <canvas id='vector_canvas_2' class="canvas-wrapped"></canvas>
+  </div> 
+  <script>
+    // Function to create the vector using user-input coordinates
+    function createVectors() {
+      var x1Coordinate = parseFloat(document.getElementById("x1Coordinate").value);
+      var y1Coordinate = parseFloat(document.getElementById("y1Coordinate").value);
+      var x2Coordinate = parseFloat(document.getElementById("x2Coordinate").value);
+      var y2Coordinate = parseFloat(document.getElementById("y2Coordinate").value);
+      var x3Coordinate = parseFloat(document.getElementById("x3Coordinate").value);
+      var y3Coordinate = parseFloat(document.getElementById("y3Coordinate").value);
+
+      // Initialize the scene
+      var scene2 = new vtvt({canvas_id: "vector_canvas_2", grid_res: 16, circle_rad: 0.5, show_matrix: false, show_eig: false});
+
+      // Add vectors using user-input coordinates
+      scene2.addVector({coords: [x1Coordinate, y1Coordinate], c: "190, 160, 0", draggable: true, kind: 'vector', label: "v1"});   
+      scene2.addVector({coords: [x2Coordinate, y2Coordinate], c: "0, 160, 190", draggable: true, kind: 'vector', label: "v2", map_coords: function(){ 
+          return {
+              mapXo: scene2.vectors[0].coord_x, 
+              mapYo: scene2.vectors[0].coord_y
+          };
+      }});    
+      scene2.addVector({coords: [x3Coordinate, y3Coordinate], c: "190, 0, 190", draggable: true, kind: 'vector', label: "v3", map_coords: function(){ 
+          return {
+              mapXo: scene2.vectors[0].coord_x + scene2.vectors[1].coord_x, 
+              mapYo: scene2.vectors[0].coord_y + scene2.vectors[1].coord_y
+          };
+      }});    
+      scene2.addVector({c: "200,200,200", draggable: true, kind: 'vector', draggable: false, label: "                         v1+v2+v3", map_coords: function(){ 
+          return {
+              mapX: scene2.vectors[0].coord_x + scene2.vectors[1].coord_x + scene2.vectors[2].coord_x, 
+              mapY: scene2.vectors[0].coord_y + scene2.vectors[1].coord_y + scene2.vectors[2].coord_y
+          };
+      }});           
+      
+      // Render the scene
+      scene2.render();    
+    }
+  </script>
+  <button id = "button" style="background-color: rgb(195, 232, 138); font-family: monospace; font-size: large;" onclick="ResetBack()">Go back Home</button>
+    <script>
+        function ResetBack(){
+            window.close();
+        }
+    </script>
+</body>
+</html>
